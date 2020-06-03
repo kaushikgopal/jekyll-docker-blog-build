@@ -251,13 +251,13 @@ RUN npm install --prefix $NODE_HOME firebase-tools@7.10.0 --unsafe-perm --verbos
 # Install gems/jekyll
 #####################
 
-RUN bundle config path $GEM_HOME
+RUN bundle config system && bundle config path $GEM_HOME
 
 WORKDIR /srv/jekyll
 
 COPY Gemfile $WORKDIR/Gemfile
 COPY Gemfile.lock $WORKDIR/Gemfile.lock
 RUN gem install bundler
-RUN bundle install --verbose --system
+RUN bundle install --verbose
 
 CMD ["bundle", "exec", "jekyll", "serve", "-w", "-I", "l", "o"]

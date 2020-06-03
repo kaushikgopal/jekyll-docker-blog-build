@@ -10,8 +10,7 @@ Adapted from:
 
 # Upgrading dependencies
 
-* bundle update --bundler
-* bundle config deployment "true"
-* Change Gemfile
-* bundle install --deployment
+* docker run --rm -v="$PWD:/srv/jekyll" -it jklgg/blog /bin/sh
+* bundle install
+* if any changes in Gemfile.lock, bring back and check in
 
