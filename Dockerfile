@@ -145,7 +145,6 @@ RUN set -eux; \
 	bundle --version
 
 
-
 ###############################################################################
 # Install npm/node
 ###############################################################################
@@ -254,10 +253,10 @@ RUN npm install --prefix $NODE_HOME firebase-tools@7.10.0 --unsafe-perm --verbos
 #####################
 # TODO: should use /usr/local/bundle for caching
 # add your volume's Gemfile(.lock) to tmp
-ADD Gemfile
-ADD Gemfile.lock
-RUN bundle install --verbose --path $GEM_HOME
-
+#ADD Gemfile
+#ADD Gemfile.lock
+#RUN bundle install --verbose --path $GEM_HOME
+RUN bundle config set path $GEM_HOME
 
 # ENTRYPOINT bundle exec jekyll build &&\
 #           bundle exec jekyll serve -wIl \
