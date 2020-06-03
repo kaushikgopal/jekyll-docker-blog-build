@@ -256,7 +256,7 @@ RUN bundle config path $GEM_HOME
 WORKDIR /srv/jekyll
 
 COPY Gemfile $WORKDIR/Gemfile
-#COPY Gemfile.lock $WORKDIR/Gemfile.lock
+COPY Gemfile.lock $WORKDIR/Gemfile.lock
 RUN gem install bundler
 RUN bundle install --verbose --system
 
