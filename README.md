@@ -2,7 +2,7 @@ Available on docker-hub https://hub.docker.com/repository/docker/jklgg/blog-buil
 
 Run this locally like so:
 
-    docker run --rm --publish 4000:4000 --publish 35729:35729 -v="$PWD:/srv/jekyll" -it jklgg/blog-build:0.3
+    docker run --rm --publish 4000:4000 --publish 35729:35729 -v="$PWD:/srv/jekyll" -it jklgg/blog-build:0.5
 
 # Adapted from:
 
