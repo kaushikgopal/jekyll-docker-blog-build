@@ -1,10 +1,36 @@
 FROM alpine:3.11
+LABEL maintainer "Kaushik Gopal <c@jkl.gg>"
 
 RUN apk add --no-cache \
 		gmp-dev
 
 ###############################################################################
-# Install ruby 2.7
+# Environment variables
+###############################################################################
+
+ENV RUBY_MAJOR 2.7
+ENV RUBY_VERSION 2.7.1
+ENV RUBY_DOWNLOAD_SHA256 b224f9844646cc92765df8288a46838511c1cec5b550d8874bd4686a904fcee7
+
+# don't create ".bundle" in all our apps
+ENV GEM_HOME /usr/local/bundle
+ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
+	BUNDLE_APP_CONFIG="$GEM_HOME"
+# adjust permissions of a few directories for running "gem install" as an arbitrary user
+RUN mkdir -p $GEM_HOME && chmod 777 $GEM_HOME
+
+ENV NODE_VERSION 12.18.0
+ENV YARN_VERSION 1.22.4
+ENV NODE_HOME /usr/local
+RUN mkdir -p $NODE_HOME/node_modules && chmod 777 $NODE_HOME/node_modules
+
+ENV JEKYLL_DATA_DIR=/srv/jekyll
+RUN mkdir -p $JEKYLL_DATA_DIR && chmod 777 $JEKYLL_DATA_DIR
+
+ENV PATH $GEM_HOME/bin:$NODE_HOME/node_modules:$PATH
+
+###############################################################################
+# Install Ruby
 ###############################################################################
 
 # skip installing gem documentation
@@ -15,9 +41,6 @@ RUN set -eux; \
 		echo 'update: --no-document'; \
 	} >> /usr/local/etc/gemrc
 
-ENV RUBY_MAJOR 2.7
-ENV RUBY_VERSION 2.7.1
-ENV RUBY_DOWNLOAD_SHA256 b224f9844646cc92765df8288a46838511c1cec5b550d8874bd4686a904fcee7
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -121,21 +144,12 @@ RUN set -eux; \
 	gem --version; \
 	bundle --version
 
-# don't create ".bundle" in all our apps
-ENV GEM_HOME /usr/local/bundle
-ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
-	BUNDLE_APP_CONFIG="$GEM_HOME"
-ENV PATH $GEM_HOME/bin:$PATH
-# adjust permissions of a few directories for running "gem install" as an arbitrary user
-RUN mkdir -p "$GEM_HOME" && chmod 777 "$GEM_HOME"
 
 
 ###############################################################################
-# Install node
-# node version 12.14.0
+# Install npm/node
 ###############################################################################
 
-ENV NODE_VERSION 12.18.0
 
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
@@ -207,7 +221,6 @@ RUN addgroup -g 1000 node \
   && node --version \
   && npm --version
 
-ENV YARN_VERSION 1.22.4
 
 RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && for key in \
@@ -233,20 +246,23 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
 ###############################################################################
 # Install firebase
 ###############################################################################
-RUN npm install firebase-tools@7.10.0 --unsafe-perm --verbose
-
-#WORKDIR /srv/jekyll
+# TODO: should use /usr/local/node_modules for caching
+RUN npm install --prefix $NODE_HOME firebase-tools@7.10.0 --unsafe-perm --verbose
 
 #####################
 # Install gems/jekyll
 #####################
+# TODO: should use /usr/local/bundle for caching
 # add your volume's Gemfile(.lock) to tmp
-#ADD Gemfile /tmp/
-#ADD Gemfile.lock /tmp/
-#RUN bundle install --verbose # --path vendor/bundle
-#RUN gem install eventmachine --platform ruby
-#
-#
-#ENTRYPOINT bundle exec jekyll build &&\
+ADD Gemfile
+ADD Gemfile.lock
+RUN bundle install --verbose --path $GEM_HOME
+
+
+# ENTRYPOINT bundle exec jekyll build &&\
 #           bundle exec jekyll serve -wIl \
 #                            --host 0.0.0.0
+
+WORKDIR /srv/jekyll
+
+CMD ["jekyll", "--help"]
