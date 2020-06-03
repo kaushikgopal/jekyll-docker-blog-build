@@ -260,9 +260,4 @@ COPY Gemfile $WORKDIR/Gemfile
 RUN gem install bundler
 RUN bundle install --verbose --system
 
-# ENTRYPOINT bundle exec jekyll build &&\
-#           bundle exec jekyll serve -wIl \
-#                            --host 0.0.0.0
-
-
-CMD ["jekyll", "--help"]
+CMD ["bundle", "exec", "jekyll", "serve", "-w", "-I", "l", "o"]
