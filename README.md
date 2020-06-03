@@ -10,7 +10,6 @@ Adapted from:
 
 # Upgrading dependencies
 
-* docker run --rm -v="$PWD:/srv/jekyll" -it jklgg/blog /bin/sh
+* Update the Gemfile
 * bundle install
-* if any changes in Gemfile.lock, bring back and check in
-
+* docker build --tag jklgg/blog-build:X.X --file Dockerfile .
