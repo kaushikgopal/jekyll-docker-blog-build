@@ -14,8 +14,7 @@ ENV RUBY_DOWNLOAD_SHA256 b224f9844646cc92765df8288a46838511c1cec5b550d8874bd4686
 
 # don't create ".bundle" in all our apps
 ENV GEM_HOME /usr/local/bundle
-ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
-	BUNDLE_APP_CONFIG="$GEM_HOME"
+ENV GEM_PATH $GEM_HOME
 # adjust permissions of a few directories for running "gem install" as an arbitrary user
 RUN mkdir -p $GEM_HOME && chmod 777 $GEM_HOME
 
@@ -252,14 +251,14 @@ RUN npm install --prefix $NODE_HOME firebase-tools@7.10.0 --unsafe-perm --verbos
 # Install gems/jekyll
 #####################
 
-RUN bundle config set path $GEM_HOME
+RUN bundle config path $GEM_HOME
 
 WORKDIR /srv/jekyll
 
 COPY Gemfile $WORKDIR/Gemfile
 #COPY Gemfile.lock $WORKDIR/Gemfile.lock
 RUN gem install bundler
-RUN bundle install --verbose
+RUN bundle install --verbose --system
 
 # ENTRYPOINT bundle exec jekyll build &&\
 #           bundle exec jekyll serve -wIl \
