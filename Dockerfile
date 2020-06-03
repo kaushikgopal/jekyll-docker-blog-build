@@ -2,7 +2,7 @@ FROM alpine:3.11
 LABEL maintainer "Kaushik Gopal <c@jkl.gg>"
 
 RUN apk add --no-cache \
-		gmp-dev
+		 g++ make musl-dev
 
 ###############################################################################
 # Environment variables
@@ -251,17 +251,19 @@ RUN npm install --prefix $NODE_HOME firebase-tools@7.10.0 --unsafe-perm --verbos
 #####################
 # Install gems/jekyll
 #####################
-# TODO: should use /usr/local/bundle for caching
-# add your volume's Gemfile(.lock) to tmp
-#ADD Gemfile
-#ADD Gemfile.lock
-#RUN bundle install --verbose --path $GEM_HOME
+
 RUN bundle config set path $GEM_HOME
+
+WORKDIR /srv/jekyll
+
+COPY Gemfile $WORKDIR/Gemfile
+#COPY Gemfile.lock $WORKDIR/Gemfile.lock
+RUN gem install bundler
+RUN bundle install --verbose
 
 # ENTRYPOINT bundle exec jekyll build &&\
 #           bundle exec jekyll serve -wIl \
 #                            --host 0.0.0.0
 
-WORKDIR /srv/jekyll
 
 CMD ["jekyll", "--help"]
