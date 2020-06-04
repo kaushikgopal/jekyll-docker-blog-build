@@ -149,6 +149,6 @@ WORKDIR /srv/jekyll
 COPY Gemfile $WORKDIR/Gemfile
 COPY Gemfile.lock $WORKDIR/Gemfile.lock
 RUN gem install bundler
-RUN bundle install --verbose
+RUN bundle check || bundle install --verbose
 
 CMD ["bundle", "exec", "jekyll", "serve", "-w", "-I", "-l"]
