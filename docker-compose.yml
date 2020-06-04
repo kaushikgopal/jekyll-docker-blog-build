@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  jekyll:
+    image: jklgg/blog-build:0.5
+    volumes:
+      - "$PWD:/srv/jekyll"
+    ports:
+      - '4000:4000'
+      - '35729:35720'
+
+# docker run --rm --publish 4000:4000 --publish 35729:35729 -v="$PWD:/srv/jekyll" -it jklgg/blog-build:0.5

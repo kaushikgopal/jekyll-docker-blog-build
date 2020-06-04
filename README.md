@@ -1,8 +1,16 @@
 Available on docker-hub https://hub.docker.com/repository/docker/jklgg/blog-build
 
+# Using this container for your jekyll blog
+
 Run this locally like so:
 
     docker run --rm --publish 4000:4000 --publish 35729:35729 -v="$PWD:/srv/jekyll" -it jklgg/blog-build:0.5
+
+Or if you prefer docker-compose:
+
+    docker-compose -f ../jekyll-docker-blog-build/docker-compose.yml up
+    # to be run from within your jekyll dir, but point to the compose file here
+
 
 # Adapted from:
 
@@ -10,7 +18,6 @@ Run this locally like so:
 * https://github.com/nodejs/docker-node/blob/master/12/alpine3.11/Dockerfile
 * https://github.com/envygeeks/jekyll-docker/blob/master/repos/jekyll/Dockerfile
 * https://kaush.quip.com/ccxYAW933asG/Docker-Jekyll
-
 
 
 # Upgrading dependencies
