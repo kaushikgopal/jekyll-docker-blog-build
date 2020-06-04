@@ -1,8 +1,9 @@
 version: '3'
 
 services:
-  jekyll:
+  jekyll-build:
     image: jklgg/blog-build:0.5
+    command: bundle exec jekyll server --watch --incremental --livereload
     volumes:
       - "$PWD:/srv/jekyll"
     ports:
