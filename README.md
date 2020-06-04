@@ -2,15 +2,18 @@ Available on docker-hub https://hub.docker.com/repository/docker/jklgg/blog-buil
 
 # Using this container for your jekyll blog
 
-Run this locally like so:
+Run this locally (from your jekyll directory) like so:
 
-    docker run --rm --publish 4000:4000 --publish 35729:35729 -v="$PWD:/srv/jekyll" -it jklgg/blog-build:0.5
+    # Run jekyll server with live-reload
+    docker-compose up
+    # docker run --rm --publish 4000:4000 --publish 35729:35729 -v="$PWD:/srv/jekyll" -it jklgg/jblog:1.0
 
-Or if you prefer docker-compose:
 
-    docker-compose -f ../jekyll-docker-blog-build/docker-compose.yml up
-    # to be run from within your jekyll dir, but point to the compose file here
+To publish with firebase hosting
 
+    # jekyll build and then firebase deploy
+    docker-compose -f docker-compose-publish.yml up
+    # docker run --rm -v="$PWD:/srv/jekyll" -it jklgg/jblog:1.0 /usr/local/bin/firebase deploy
 
 # Adapted from:
 
