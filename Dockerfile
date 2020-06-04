@@ -1,8 +1,7 @@
 FROM alpine:3.11
 LABEL maintainer "Kaushik Gopal <c@jkl.gg>"
 
-RUN apk add --no-cache \
-		 g++ make musl-dev
+RUN apk add --no-cache musl-dev g++ make
 
 ###############################################################################
 # Environment variables
