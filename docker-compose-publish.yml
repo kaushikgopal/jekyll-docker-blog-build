@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  jekyll:
+    image: jklgg/jblog:1.0
+    command: >
+      sh -c "bundle exec jekyll build &&
+                rm -rf .firebase &&
+                /usr/local/bin/firebase deploy \
+                                --non-interactive \
+                                --only hosting \
+                                --token=$FIREBASE_TOKEN"
+    volumes:
+      - "$PWD:/srv/jekyll"
+
+
+# run this script like so:
+# docker-compose -f docker-compose-publish.yml up --remove-orphans

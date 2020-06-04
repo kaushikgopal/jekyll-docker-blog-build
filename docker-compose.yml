@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  jekyll:
+    image: jklgg/jblog:1.0
+    command: >
+      sh -c "bundle exec jekyll build &&
+             bundle exec jekyll server --watch --incremental --livereload"
+    ports:
+      - '4000:4000'
+      - '35729:35720'
+    volumes:
+      - "$PWD:/srv/jekyll"
+
+
+# run this script like so:
+# docker-compose up --remove-orphans
