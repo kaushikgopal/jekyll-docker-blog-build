@@ -5,8 +5,9 @@ services:
   jekyll:
     image: jklgg/jblog:1.0
     command: >
-      sh -c "bundle exec jekyll build &&
-                rm -rf .firebase &&
+      sh -c "rm -rf _site &&
+            bundle exec jekyll build &&
+            rm -rf .firebase &&
                 /usr/local/bin/firebase deploy \
                                 --non-interactive \
                                 --only hosting \
