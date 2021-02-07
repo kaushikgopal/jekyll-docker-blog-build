@@ -7,13 +7,17 @@ RUN apk add --no-cache musl-dev g++ make
 # Environment variables
 ###############################################################################
 
-ENV RUBY_MAJOR 2.7
-ENV RUBY_VERSION 2.7.1
-ENV RUBY_DOWNLOAD_SHA256 b224f9844646cc92765df8288a46838511c1cec5b550d8874bd4686a904fcee7
+ENV RUBY_MAJOR 3.0
+ENV RUBY_VERSION 3.0.0
+ENV RUBY_DOWNLOAD_SHA256 68bfaeef027b6ccd0032504a68ae69721a70e97d921ff328c0c8836c798f6cb1
 
 # don't create ".bundle" in all our apps
 ENV GEM_HOME /usr/local/bundle
+ENV BUNDLE_SILENCE_ROOT_WARNING=1 \
+	BUNDLE_APP_CONFIG="$GEM_HOME"
+ENV PATH $GEM_HOME/bin:$PATH
 ENV GEM_PATH $GEM_HOME
+
 # adjust permissions of a few directories for running "gem install" as an arbitrary user
 RUN mkdir -p $GEM_HOME && chmod 777 $GEM_HOME
 
@@ -38,7 +42,6 @@ RUN set -eux; \
 		echo 'install: --no-document'; \
 		echo 'update: --no-document'; \
 	} >> /usr/local/etc/gemrc
-
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -65,6 +68,7 @@ RUN set -eux; \
 		ncurses-dev \
 		openssl \
 		openssl-dev \
+		patch \
 		procps \
 		readline-dev \
 		ruby \
@@ -142,6 +146,8 @@ RUN set -eux; \
 	gem --version; \
 	bundle --version
 
+# adjust permissions of a few directories for running "gem install" as an arbitrary user
+RUN mkdir -p "$GEM_HOME" && chmod 777 "$GEM_HOME"
 
 ###############################################################################
 # Install npm/node
