@@ -27,4 +27,4 @@ To publish with firebase hosting
 
 * Update the Gemfile
 * bundle install
-* docker build --tag jklgg/blog-build:X.X --file Dockerfile .
+* docker build --tag jklgg/jblog:X.X --file Dockerfile .
