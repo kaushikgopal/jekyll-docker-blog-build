@@ -1,1 +1,16 @@
+*.rdb
+.DS_Store
+.code-highlighter-cache
+.env
+.firebase/
+.git
+.idea/
+.ink-cache
+.jekyll-cache
+.jekyll-metadata
+.sass-cache
+_site
+node_modules/
+package-lock.json
+tmp
 vendor
