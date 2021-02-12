@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-source 'https://rubygems.org'
-
 gem "bundler"  
 gem "webrick" # stopped comign with Ruby 3.0
 
