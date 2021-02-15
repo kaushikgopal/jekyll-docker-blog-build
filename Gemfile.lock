@@ -11,7 +11,7 @@ GEM
     eventmachine (1.2.7)
     ffi (1.14.2)
     forwardable-extended (2.6.0)
-    henry-jekyll (0.2.1)
+    henry-jekyll (0.2.3)
       jekyll (~> 4.2)
       jekyll-feed (~> 0.15)
       jekyll-paginate (~> 1.1)
