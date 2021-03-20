@@ -13,7 +13,7 @@ services:
                                 --only hosting \
                                 --token=$FIREBASE_TOKEN"
     volumes:
-      - "$PWD:/srv/jekyll"
+      - "./:/srv/jekyll"
 
 
 # run this script like so:
